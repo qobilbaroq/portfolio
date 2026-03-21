@@ -10,9 +10,10 @@ const SECTIONS = {
   21: 'experience',
 }
 
-export default function HomePage() {
+export default function CalendarPortal() {
   const [activeSection, setActiveSection] = useState<number | null>(null)
   const sectionRefs = {
+    paper: useRef<HTMLDivElement>(null),
     about: useRef<HTMLDivElement>(null),
     now: useRef<HTMLDivElement>(null),
     skills: useRef<HTMLDivElement>(null),
@@ -35,29 +36,22 @@ export default function HomePage() {
     <main style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
       {/* Hero — Kalender */}
-      <section style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
+      <section
+        className='section-paper'
+        ref={sectionRefs.paper}
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
         padding: 'clamp(32px, 6vw, 80px)',
         maxWidth: '800px',
         margin: '0 auto',
       }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '40px',
-        }}>
-          <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-            Moch Nabil Al Mubaroq
-          </p>
-          <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-            portfolio
-          </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
+          <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Moch Nabil Al Mubaroq</p>
+          <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>portfolio</p>
         </div>
-
         <CalendarGrid onDateClick={handleDateClick} />
       </section>
 
@@ -70,7 +64,7 @@ export default function HomePage() {
           display: 'flex',
           alignItems: 'center',
           padding: 'clamp(32px, 6vw, 80px)',
-          maxWidth: '600px',
+          maxWidth: '700px',
           margin: '0 auto',
         }}
       >
@@ -94,18 +88,8 @@ export default function HomePage() {
               transform: 'rotate(-2deg)',
               flexShrink: 0,
             }}>
-              <div style={{
-                background: 'var(--bg-surface)',
-                width: '100px',
-                height: '90px',
-                borderRadius: '2px',
-              }} />
-              <p style={{
-                fontSize: '10px',
-                color: 'var(--text-muted)',
-                textAlign: 'center',
-                marginTop: '8px',
-              }}>nabil, 2024</p>
+              <div style={{ background: 'var(--bg-surface)', width: '100px', height: '90px', borderRadius: '2px' }} />
+              <p style={{ fontSize: '10px', color: 'var(--text-muted)', textAlign: 'center', marginTop: '8px' }}>nabil, 2024</p>
             </div>
 
             <div style={{ flex: 1, minWidth: '200px' }}>
@@ -119,11 +103,7 @@ export default function HomePage() {
               }}>
                 Moch Nabil<br />Al Mubaroq
               </h2>
-              <p style={{
-                fontSize: '14px',
-                color: 'var(--accent)',
-                marginBottom: '16px',
-              }}>Frontend Developer</p>
+              <p style={{ fontSize: '14px', color: 'var(--accent)', marginBottom: '16px' }}>Frontend Developer</p>
               <div style={{
                 display: 'inline-block',
                 background: '#F5E87A',
@@ -133,14 +113,8 @@ export default function HomePage() {
                 borderRadius: '2px',
                 transform: 'rotate(1deg)',
                 marginBottom: '16px',
-              }}>
-                Bandung, Indonesia
-              </div>
-              <p style={{
-                fontSize: '14px',
-                color: 'var(--text-muted)',
-                lineHeight: 1.7,
-              }}>
+              }}>Bandung, Indonesia</div>
+              <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.7 }}>
                 Fresh grad yang suka bikin hal-hal yang rapi di layar.
                 Vue, React, Flutter — apapun yang bikin user senang.
               </p>
@@ -158,7 +132,7 @@ export default function HomePage() {
           display: 'flex',
           alignItems: 'center',
           padding: 'clamp(32px, 6vw, 80px)',
-          maxWidth: '600px',
+          maxWidth: '700px',
           margin: '0 auto',
         }}
       >
@@ -213,7 +187,7 @@ export default function HomePage() {
           display: 'flex',
           alignItems: 'center',
           padding: 'clamp(32px, 6vw, 80px)',
-          maxWidth: '600px',
+          maxWidth: '700px',
           margin: '0 auto',
         }}
       >
@@ -261,13 +235,13 @@ export default function HomePage() {
                   background: skill.style === 'fill'
                     ? 'var(--text-primary)'
                     : skill.style === 'gray'
-                    ? 'var(--bg-surface)'
-                    : 'transparent',
+                      ? 'var(--bg-surface)'
+                      : 'transparent',
                   color: skill.style === 'fill'
                     ? 'var(--bg)'
                     : skill.style === 'outline'
-                    ? 'var(--accent)'
-                    : 'var(--text-muted)',
+                      ? 'var(--accent)'
+                      : 'var(--text-muted)',
                 }}
                 onMouseEnter={e => {
                   (e.currentTarget as HTMLElement).style.transform = `rotate(0deg) scale(1.05)`
@@ -292,7 +266,7 @@ export default function HomePage() {
           display: 'flex',
           alignItems: 'center',
           padding: 'clamp(32px, 6vw, 80px)',
-          maxWidth: '600px',
+          maxWidth: '700px',
           margin: '0 auto',
         }}
       >
@@ -371,70 +345,50 @@ function ExperienceCard({
         background: 'white',
         border: '0.5px solid var(--border)',
         borderRadius: '4px',
-        padding: '0',
+        padding: '16px',
         transform: open ? 'rotate(0deg)' : `rotate(${rotate})`,
         cursor: 'pointer',
-        transition: 'transform 0.3s ease',
-        overflow: 'hidden',
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+        boxShadow: open ? '0 8px 24px rgba(0,0,0,0.08)' : 'none',
       }}
     >
-      {/* Tutup amplop */}
-      <div style={{
-        background: 'var(--bg-surface)',
-        padding: '12px 16px',
-        borderBottom: open ? '0.5px solid var(--border)' : 'none',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div>
+          <p style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-primary)', marginBottom: '4px' }}>
+            {company}
+          </p>
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{role} · {period}</p>
+        </div>
         <div style={{
-          width: '0',
-          height: '0',
-          borderLeft: '60px solid transparent',
-          borderRight: '60px solid transparent',
-          borderTop: `20px solid var(--border)`,
-          position: 'absolute',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: open ? 'none' : 'block',
-        }} />
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-          <p style={{ fontSize: '13px', fontWeight: '500', color: 'var(--text-primary)' }}>{company}</p>
-          <div style={{
-            width: '28px',
-            height: '28px',
-            borderRadius: '50%',
-            border: '1.5px solid var(--accent)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '7px',
-            color: 'var(--accent)',
-            fontWeight: '500',
-            transform: 'rotate(-15deg)',
-          }}>
-            {type}
-          </div>
+          width: '36px',
+          height: '36px',
+          borderRadius: '50%',
+          border: '2px solid var(--accent)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '8px',
+          color: 'var(--accent)',
+          fontWeight: '500',
+          transform: 'rotate(-15deg)',
+          flexShrink: 0,
+        }}>
+          {type}
         </div>
       </div>
 
-      {/* Isi amplop */}
-      <div style={{ padding: '12px 16px' }}>
-        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: open ? '10px' : '0' }}>
-          {role} · {period}
+      {open && (
+        <p style={{
+          fontSize: '13px',
+          color: 'var(--text-muted)',
+          lineHeight: 1.7,
+          marginTop: '12px',
+          borderTop: '0.5px solid var(--border)',
+          paddingTop: '12px',
+        }}>
+          {description}
         </p>
-        {open && (
-          <p style={{
-            fontSize: '13px',
-            color: 'var(--text-muted)',
-            lineHeight: 1.7,
-            borderTop: '0.5px solid var(--border)',
-            paddingTop: '10px',
-          }}>
-            {description}
-          </p>
-        )}
-      </div>
+      )}
     </div>
   )
 }

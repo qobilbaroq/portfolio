@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
 const NAV_ITEMS = [
+  { label: 'Paper', section: 'section-paper' },
   { label: 'About', section: 'section-about' },
   { label: 'Now', section: 'section-now' },
   { label: 'Skills', section: 'section-skills' },
