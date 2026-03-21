@@ -29,7 +29,7 @@ export default function Navbar() {
     gsap.fromTo(cardRef.current,
       { width: 44 },
       {
-        width: 130,
+        width: 75,
         duration: 0.3,
         ease: 'power2.out',
         onComplete: () => setShowList(true),

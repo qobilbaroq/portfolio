@@ -44,10 +44,10 @@ export default function CalendarPortal() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-        padding: 'clamp(32px, 6vw, 80px)',
-        maxWidth: '800px',
-        margin: '0 auto',
-      }}>
+          padding: 'clamp(32px, 6vw, 80px)',
+          maxWidth: '800px',
+          margin: '0 auto',
+        }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
           <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Moch Nabil Al Mubaroq</p>
           <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>portfolio</p>
@@ -88,7 +88,11 @@ export default function CalendarPortal() {
               transform: 'rotate(-2deg)',
               flexShrink: 0,
             }}>
-              <div style={{ background: 'var(--bg-surface)', width: '100px', height: '90px', borderRadius: '2px' }} />
+              <img
+                src="/image-portofolio.jpeg"
+                alt="nabil, 2024"
+                style={{ width: '100px', height: '90px', borderRadius: '2px', objectFit: 'cover', display: 'block' }}
+              />
               <p style={{ fontSize: '10px', color: 'var(--text-muted)', textAlign: 'center', marginTop: '8px' }}>nabil, 2024</p>
             </div>
 
@@ -115,8 +119,8 @@ export default function CalendarPortal() {
                 marginBottom: '16px',
               }}>Bandung, Indonesia</div>
               <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.7 }}>
-                Fresh grad yang suka bikin hal-hal yang rapi di layar.
-                Vue, React, Flutter — apapun yang bikin user senang.
+                Fresh grad yang suka mempelajari hal-hal baru.
+                Apapun yang bikin aku senang.
               </p>
             </div>
           </div>
@@ -158,7 +162,7 @@ export default function CalendarPortal() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {[
               { text: 'Building: Youtone (Flutter music app)', color: '#B5D4F4', textColor: '#042C53', rotate: '-1deg' },
-              { text: 'Learning: React, Next.js', color: '#F4C0D1', textColor: '#4B1528', rotate: '1.5deg' },
+              { text: 'Learning: LLM AI & Exam Prep', color: '#F4C0D1', textColor: '#4B1528', rotate: '1.5deg' },
               { text: 'Status: Open to work', color: '#F5E87A', textColor: '#412402', rotate: '-0.5deg' },
             ].map((item, i) => (
               <div key={i} style={{
@@ -304,7 +308,7 @@ export default function CalendarPortal() {
                 role: 'Juara 2',
                 period: '2024',
                 type: 'JUARA',
-                description: 'Meraih juara 2 dalam kompetisi web development tingkat universitas di Universitas Komputer Indonesia.',
+                description: 'Meraih juara 2 dalam kompetisi web development di Universitas Komputer Indonesia.',
                 rotate: '0.5deg',
               },
               {
