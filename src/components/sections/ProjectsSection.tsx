@@ -8,7 +8,7 @@ export default function ProjectsSection() {
   ]
 
   return (
-    <section style={{
+    <section className="section-projects" style={{
       minHeight: '100vh',
       padding: 'clamp(48px, 8vw, 120px)',
       maxWidth: '800px',

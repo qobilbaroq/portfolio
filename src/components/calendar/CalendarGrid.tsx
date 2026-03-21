@@ -6,17 +6,12 @@ interface CalendarGridProps {
   onDateClick: (date: number) => void
 }
 
-const SECTION_DATES = [1, 2, 3, 4]
+const SECTION_DATES = [1, 5, 7, 21]
 
 const FUN_FACTS = [
-  'Punya mechanical keyboard lebih dari satu',
   'Suka foto pakai kamera film analog',
-  'Pernah bikin drama bahasa Sunda buat tugas sekolah',
-  'Aplikasi musik pertama dibangun pakai Flutter',
   'Juara 2 lomba web, juara 1 di hati sendiri',
   'Fedora Linux user sejak SMK',
-  'Bisa scroll TikTok sambil debugging',
-  'Nama lengkap susah dieja tapi gampang diingat',
 ]
 
 export default function CalendarGrid({ onDateClick }: CalendarGridProps) {
@@ -103,31 +98,25 @@ export default function CalendarGrid({ onDateClick }: CalendarGridProps) {
           justifyContent: 'center',
           fontSize: '13px',
           borderRadius: '4px',
-          border: isSectionDate ? '1.5px solid var(--accent)' : '1.5px solid transparent',
+          border: '1.5px solid transparent',
           background: isToday
             ? 'var(--text-primary)'
-            : isSectionDate
-            ? 'transparent'
             : 'var(--bg-surface)',
           color: isToday
             ? 'var(--bg)'
-            : isSectionDate
-            ? 'var(--accent)'
             : 'var(--text-muted)',
           cursor: 'pointer',
-          fontWeight: isSectionDate || isToday ? '500' : '400',
+          fontWeight: isToday ? '500' : '400',
           transition: 'all 0.15s ease',
         }}
         onMouseEnter={e => {
           if (!isToday) {
-            (e.target as HTMLElement).style.background = isSectionDate ? 'var(--accent)' : 'var(--border)'
-            if (isSectionDate) (e.target as HTMLElement).style.color = 'var(--bg)'
+            (e.target as HTMLElement).style.background = 'var(--border)'
           }
         }}
         onMouseLeave={e => {
           if (!isToday) {
-            (e.target as HTMLElement).style.background = isSectionDate ? 'transparent' : 'var(--bg-surface)'
-            if (isSectionDate) (e.target as HTMLElement).style.color = 'var(--accent)'
+            (e.target as HTMLElement).style.background = 'var(--bg-surface)'
           }
         }}
       >

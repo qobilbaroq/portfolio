@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer style={{
+    <footer className="section-footer" style={{
       background: 'var(--text-primary)',
       padding: 'clamp(48px, 8vw, 120px)',
     }}>
