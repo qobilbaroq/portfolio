@@ -119,13 +119,6 @@ export default function Navbar() {
         className="relative cursor-pointer mb-3"
         style={{ height: '24px', width: '44px', overflow: 'hidden' }}
       >
-        {/* Kertas belakang 2 */}
-        <div className="absolute inset-0 rounded-sm border border-[var(--border)]"
-          style={{ background: '#E0DAD2', transform: 'rotate(3deg)', zIndex: 1 }} />
-        {/* Kertas belakang 1 */}
-        <div className="absolute inset-0 rounded-sm border border-[var(--border)]"
-          style={{ background: '#EAE5DE', transform: 'rotate(-2deg)', zIndex: 2 }} />
-        {/* Kertas depan */}
         <div
           className="absolute inset-0 rounded-sm border border-[var(--border)] flex items-center justify-center"
           style={{ background: 'var(--bg)', zIndex: 3 }}
@@ -133,7 +126,7 @@ export default function Navbar() {
           <span
             className="text-[11px] font-medium tracking-widest uppercase whitespace-nowrap"
             style={{
-              color: 'var(--text-primary)',
+              color: 'var(--text-muted)',
               opacity: 0,
               fontFamily: 'var(--font-sans)',
             }}

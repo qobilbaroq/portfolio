@@ -1,123 +1,81 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import gsap from 'gsap'
 
+const SHAKING_DATES = [2, 6, 9, 13, 17, 22, 26]
+
+const DAYS = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min']
+
 export default function NotFound() {
   const router = useRouter()
+  const [lockedDates, setLockedDates] = useState<number[]>([])
+  const [showEaster, setShowEaster] = useState(false)
   const calRef = useRef<HTMLDivElement>(null)
-  const msgRef = useRef<HTMLDivElement>(null)
-  const num404Ref = useRef<HTMLDivElement>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
+  const shakingRefs = useRef<Record<number, HTMLDivElement | null>>({})
+
+  const remaining = SHAKING_DATES.length - lockedDates.length
 
   useEffect(() => {
-    // Animasi masuk
+    // Animasi masuk kalender
     gsap.fromTo(calRef.current,
-      { y: -40, opacity: 0 },
+      { y: -30, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }
     )
-    gsap.fromTo(num404Ref.current,
-      { opacity: 0, scale: 0.8 },
-      { opacity: 1, scale: 1, duration: 1, delay: 0.3, ease: 'power3.out' }
-    )
-    gsap.fromTo(msgRef.current,
-      { y: 16, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, delay: 0.6, ease: 'power3.out' }
-    )
+
+    // Animasi goyang tiap sel
+    SHAKING_DATES.forEach((date, i) => {
+      const el = shakingRefs.current[date]
+      if (!el) return
+      gsap.to(el, {
+        rotation: () => gsap.utils.random(-4, 4),
+        x: () => gsap.utils.random(-2, 2),
+        y: () => gsap.utils.random(-2, 2),
+        duration: 0.4,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: i * 0.1,
+      })
+    })
   }, [])
 
-  const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-
-  const ROW1 = [
-    { num: null, type: 'empty' },
-    { num: null, type: 'empty' },
-    { num: null, type: 'empty' },
-    { num: '4', type: 'hand', rotate: '-5deg' },
-    { num: '5', type: 'filled', rotate: '-1deg' },
-    { num: null, type: 'empty' },
-    { num: '7', type: 'filled', rotate: '1deg' },
-  ]
-
-  const ROW2 = [
-    { num: '8', type: 'filled', rotate: '-1deg' },
-    { num: '9', type: 'filled', rotate: '0.5deg' },
-    { num: null, type: 'empty' },
-    { num: '11', type: 'today', rotate: '-1deg' },
-    { num: null, type: 'empty' },
-    { num: '0', type: 'hand', rotate: '4deg' },
-    { num: '4', type: 'hand', rotate: '-3deg' },
-  ]
-
-  const ROW3 = [
-    { num: '15', type: 'filled', rotate: '1deg' },
-    { num: null, type: 'empty' },
-    { num: '17', type: 'filled', rotate: '-0.5deg' },
-    { num: null, type: 'empty' },
-    { num: '19', type: 'filled', rotate: '-1deg' },
-    { num: null, type: 'empty' },
-    { num: '21', type: 'filled', rotate: '1deg' },
-  ]
-
-  const ROW_BELOW = [22, null, 24, null, 26, null, 28]
-
-  const renderCell = (cell: { num: string | null, type: string, rotate?: string }, i: number) => {
-    if (cell.type === 'empty') {
-      return <div key={i} style={{ aspectRatio: '1' }} />
+  useEffect(() => {
+    if (remaining === 0) {
+      setShowEaster(true)
+      setTimeout(() => {
+        if (overlayRef.current) {
+          overlayRef.current.style.display = 'flex'
+          gsap.fromTo(overlayRef.current,
+            { opacity: 0 },
+            { opacity: 1, duration: 0.6, ease: 'power3.out' }
+          )
+        }
+        setTimeout(() => router.push('/'), 5000)
+      }, 50)
     }
+  }, [remaining])
 
-    if (cell.type === 'hand') {
-      return (
-        <div key={i} style={{
-          aspectRatio: '1',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontFamily: 'var(--font-serif)',
-          fontStyle: 'italic',
-          fontSize: '18px',
-          color: '#C9523A',
-          transform: `rotate(${cell.rotate})`,
-        }}>
-          {cell.num}
-        </div>
-      )
+  const handleLock = (date: number) => {
+    if (lockedDates.includes(date)) return
+    const el = shakingRefs.current[date]
+    if (el) {
+      gsap.killTweensOf(el)
+      gsap.to(el, {
+        rotation: 0,
+        x: 0,
+        y: 0,
+        duration: 0.3,
+        ease: 'back.out(2)',
+      })
     }
-
-    if (cell.type === 'today') {
-      return (
-        <div key={i} style={{
-          aspectRatio: '1',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '12px',
-          borderRadius: '4px',
-          background: '#1A1916',
-          color: '#FAF8F4',
-          fontWeight: '500',
-          transform: `rotate(${cell.rotate})`,
-        }}>
-          {cell.num}
-        </div>
-      )
-    }
-
-    return (
-      <div key={i} style={{
-        aspectRatio: '1',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '12px',
-        borderRadius: '4px',
-        background: '#F0ECE5',
-        color: '#9A9289',
-        transform: `rotate(${cell.rotate})`,
-      }}>
-        {cell.num}
-      </div>
-    )
+    setLockedDates(prev => [...prev, date])
   }
+
+  const dates = Array.from({ length: 31 }, (_, i) => i + 1)
+  const empties = Array.from({ length: 4 }, (_, i) => i)
 
   return (
     <main style={{
@@ -127,192 +85,223 @@ export default function NotFound() {
       alignItems: 'center',
       justifyContent: 'center',
       padding: 'clamp(32px, 6vw, 80px)',
+      position: 'relative',
+      overflow: 'hidden',
     }}>
-      <div style={{ width: '100%', maxWidth: '600px', position: 'relative' }}>
 
-        {/* 404 di belakang */}
-        <div ref={num404Ref} style={{
-          position: 'absolute',
-          bottom: '60px',
-          left: 0,
-          right: 0,
-          textAlign: 'center',
-          zIndex: 1,
-          opacity: 0,
+      {/* Kalender */}
+      <div ref={calRef} style={{ width: '100%', maxWidth: '480px', opacity: 0 }}>
+        <div style={{
+          background: 'var(--bg)',
+          border: '0.5px solid var(--border)',
+          borderRadius: '4px',
         }}>
-          <span style={{
-            display: 'inline-block',
-            fontSize: '96px',
-            fontFamily: 'var(--font-serif)',
-            color: '#C9523A',
-            opacity: 0.2,
-            transform: 'rotate(-6deg) translateY(8px)',
-            lineHeight: 1,
-          }}>4</span>
-          <span style={{
-            display: 'inline-block',
-            fontSize: '96px',
-            fontFamily: 'var(--font-serif)',
-            color: '#C9523A',
-            opacity: 0.2,
-            transform: 'rotate(3deg) translateY(-4px)',
-            lineHeight: 1,
-          }}>0</span>
-          <span style={{
-            display: 'inline-block',
-            fontSize: '96px',
-            fontFamily: 'var(--font-serif)',
-            color: '#C9523A',
-            opacity: 0.2,
-            transform: 'rotate(-2deg) translateY(10px)',
-            lineHeight: 1,
-          }}>4</span>
-        </div>
 
-        {/* Kalender */}
-        <div ref={calRef} style={{ position: 'relative', zIndex: 3, opacity: 0 }}>
-
-          {/* Calendar card */}
+          {/* Header */}
           <div style={{
-            background: 'var(--bg)',
-            border: '0.5px solid #C8C0B8',
-            borderRadius: '4px 4px 0 0',
+            padding: '14px 16px',
+            borderBottom: '0.5px solid var(--border)',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'baseline',
           }}>
-            {/* Header */}
-            <div style={{
-              padding: '12px 16px 10px',
-              borderBottom: '0.5px solid var(--border)',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'baseline',
-            }}>
-              <span style={{
-                fontSize: '24px',
-                color: 'var(--text-primary)',
-                fontFamily: 'var(--font-serif)',
-                fontStyle: 'italic',
-              }}>???</span>
-              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>2026</span>
-            </div>
-
-            {/* Grid */}
-            <div style={{ padding: '6px 8px 4px' }}>
-              {/* Day labels */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(7, 1fr)',
-                gap: '2px',
-                marginBottom: '3px',
-              }}>
-                {DAYS.map(d => (
-                  <div key={d} style={{
-                    fontSize: '9px',
-                    color: '#B0A89F',
-                    textAlign: 'center',
-                  }}>{d}</div>
-                ))}
-              </div>
-
-              {/* Date rows */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '3px' }}>
-                {ROW1.map((cell, i) => renderCell(cell, i))}
-                {ROW2.map((cell, i) => renderCell(cell, i + 7))}
-                {ROW3.map((cell, i) => renderCell(cell, i + 14))}
-              </div>
-            </div>
+            <span style={{
+              fontSize: '40px',
+              color: '#C9523A',
+              fontFamily: 'var(--font-serif)',
+              fontWeight: '400',
+              fontStyle: 'italic',
+              letterSpacing: '-2px',
+              display: 'inline-block',
+              transform: 'skewX(-4deg)',
+              textDecoration: 'line-through',
+              textDecorationColor: '#C9523A',
+              textDecorationThickness: '2px',
+            }}>404</span>
+            <span style={{
+              fontSize: '11px',
+              color: 'var(--text-muted)',
+              fontFamily: 'monospace',
+              letterSpacing: '0.1em',
+            }}>ERR_????</span>
           </div>
 
-          {/* Tear effect */}
-          <svg
-            width="100%"
-            height="48"
-            viewBox="0 0 380 48"
-            preserveAspectRatio="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{ display: 'block', position: 'relative', zIndex: 3, marginTop: '-1px' }}
-          >
-            <polygon
-              points="0,0 380,0 380,6 362,24 346,4 330,32 312,8 295,36 275,6 258,30 240,4 224,34 206,10 190,40 172,8 155,38 136,12 118,36 100,6 83,30 65,8 48,34 30,10 14,28 0,12"
-              fill="#FAF8F4"
-              stroke="#C8C0B8"
-              strokeWidth="0.5"
-            />
-            <polygon
-              points="0,18 14,32 30,16 48,40 65,14 83,36 100,12 118,42 136,18 155,44 172,14 190,46 206,16 224,40 240,10 258,36 275,14 295,44 312,16 330,38 346,10 362,30 380,14 380,48 0,48"
-              fill="#FAF8F4"
-            />
-          </svg>
+          {/* Grid */}
+          <div style={{ padding: '8px' }}>
 
-          {/* Below tear */}
-          <div style={{
-            background: 'var(--bg)',
-            border: '0.5px solid #C8C0B8',
-            borderTop: 'none',
-            padding: '6px 8px 8px',
-            opacity: 0.25,
-            transform: 'rotate(0.3deg)',
-          }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '3px' }}>
-              {ROW_BELOW.map((num, i) => (
-                num ? (
-                  <div key={i} style={{
-                    aspectRatio: '1',
-                    background: '#F0ECE5',
-                    borderRadius: '3px',
-                    fontSize: '9px',
-                    color: '#9A9289',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transform: i % 2 === 0 ? 'rotate(-1deg)' : 'rotate(1deg)',
-                  }}>{num}</div>
-                ) : (
-                  <div key={i} style={{ aspectRatio: '1' }} />
+            {/* Day labels */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(7, 1fr)',
+              gap: '3px',
+              marginBottom: '4px',
+            }}>
+              {DAYS.map(d => (
+                <div key={d} style={{
+                  fontSize: '10px',
+                  color: '#B0A89F',
+                  textAlign: 'center',
+                  padding: '2px 0',
+                }}>{d}</div>
+              ))}
+            </div>
+
+            {/* Dates */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(7, 1fr)',
+              gap: '4px',
+            }}>
+              {dates.map(date => {
+                const isShaking = SHAKING_DATES.includes(date)
+                const isLocked = lockedDates.includes(date)
+
+                if (isLocked) {
+                  return (
+                    <div
+                      key={date}
+                      ref={el => { shakingRefs.current[date] = el }}
+                      style={{
+                        aspectRatio: '1',
+                        borderRadius: '4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '12px',
+                        background: '#1A1916',
+                        color: '#FAF8F4',
+                        position: 'relative',
+                        cursor: 'default',
+                      }}
+                    >
+                      {date}
+                      <span style={{
+                        position: 'absolute',
+                        top: '2px',
+                        right: '3px',
+                        fontSize: '7px',
+                        color: '#C9523A',
+                      }}>✓</span>
+                    </div>
+                  )
+                }
+
+                if (isShaking) {
+                  return (
+                    <div
+                      key={date}
+                      ref={el => { shakingRefs.current[date] = el }}
+                      onClick={() => handleLock(date)}
+                      style={{
+                        aspectRatio: '1',
+                        borderRadius: '4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '12px',
+                        background: '#FAE8E5',
+                        color: '#C9523A',
+                        border: '1px solid #C9523A',
+                        cursor: 'pointer',
+                        position: 'relative',
+                      }}
+                    >
+                      {date}
+                    </div>
+                  )
+                }
+
+                return (
+                  <div
+                    key={date}
+                    style={{
+                      aspectRatio: '1',
+                      borderRadius: '4px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '12px',
+                      background: 'var(--bg-surface)',
+                      color: 'var(--text-muted)',
+                    }}
+                  >
+                    {date}
+                  </div>
                 )
+              })}
+
+              {/* Empty cells */}
+              {empties.map(i => (
+                <div key={`empty-${i}`} style={{ aspectRatio: '1' }} />
               ))}
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Pesan */}
-        <div ref={msgRef} style={{
-          textAlign: 'center',
-          marginTop: '1.5rem',
-          position: 'relative',
-          zIndex: 4,
+      {/* Easter egg overlay */}
+      <div
+        ref={overlayRef}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'rgba(250,248,244,0.93)',
+          display: showEaster ? 'flex' : 'none',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10,
           opacity: 0,
-        }}>
+        }}
+      >
+        <div style={{ textAlign: 'center', maxWidth: '300px' }}>
+          <div style={{
+            width: '48px',
+            height: '48px',
+            borderRadius: '50%',
+            background: '#FAE8E5',
+            border: '1.5px solid #C9523A',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 16px',
+            fontSize: '20px',
+            color: '#C9523A',
+            fontFamily: 'var(--font-serif)',
+          }}>✓</div>
+
           <p style={{
-            fontSize: '13px',
+            fontSize: '18px',
+            color: 'var(--text-primary)',
+            fontFamily: 'var(--font-serif)',
+            fontWeight: '400',
+            marginBottom: '10px',
+            lineHeight: 1.3,
+          }}>
+            Tanggal corrupt<br />berhasil dipulihkan.
+          </p>
+
+          <p style={{
+            fontSize: '12px',
             color: 'var(--text-muted)',
             fontStyle: 'italic',
             fontFamily: 'var(--font-serif)',
             lineHeight: 1.7,
-            marginBottom: '16px',
+            marginBottom: '20px',
           }}>
-            Halaman ini tidak ada<br />di kalender manapun.
+            Kamu telah menstabilkan bulan yang tidak<br />
+            seharusnya ada. Kalender kembali normal.
           </p>
-          <button
-            onClick={() => router.push('/')}
-            style={{
-              background: 'var(--text-primary)',
-              color: 'var(--bg)',
-              fontSize: '12px',
-              padding: '8px 20px',
-              borderRadius: '3px',
-              border: 'none',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-sans)',
-              transition: 'opacity 0.2s ease',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = '0.8')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-          >
-            ← balik ke tanggal 1
-          </button>
-        </div>
 
+          <p style={{
+            fontSize: '10px',
+            color: '#B0A89F',
+            letterSpacing: '0.06em',
+          }}>
+            mengalihkan ke halaman utama...
+          </p>
+        </div>
       </div>
+
     </main>
   )
 }
