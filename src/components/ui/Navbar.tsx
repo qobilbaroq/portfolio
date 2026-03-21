@@ -22,28 +22,59 @@ export default function Navbar() {
   const listRef = useRef<HTMLDivElement>(null)
   const itemsRef = useRef<HTMLDivElement[]>([])
 
- const cardRef = useRef<HTMLDivElement>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
 
- useEffect(() => {
-  if (open) {
-    gsap.fromTo(cardRef.current,
-      { width: 44 },
-      {
-        width: 75,
-        duration: 0.3,
-        ease: 'power2.out',
-        onComplete: () => setShowList(true),
+  useEffect(() => {
+    if (open) {
+      const textEl = cardRef.current?.querySelector('span')
+      if (textEl) gsap.to(textEl, { opacity: 0, duration: 0.1 })
+
+      gsap.fromTo(cardRef.current,
+        { width: 44 },
+        {
+          width: 75,
+          duration: 0.3,
+          ease: 'power2.out',
+          onComplete: () => setShowList(true),
+        }
+      )
+    } else {
+      if (itemsRef.current.length > 0 && showList) {
+        gsap.to(itemsRef.current, {
+          opacity: 0,
+          y: -8,
+          scale: 0.95,
+          duration: 0.2,
+          stagger: { each: 0.04, from: 'end' },
+          ease: 'power2.in',
+          onComplete: () => {
+            setShowList(false)
+            gsap.to(cardRef.current, {
+              width: 44,
+              duration: 0.25,
+              ease: 'power2.in',
+              onComplete: () => {
+                const textEl = cardRef.current?.querySelector('span')
+                if (textEl) {
+                  gsap.fromTo(textEl,
+                    { opacity: 0 },
+                    { opacity: 1, duration: 0.2, ease: 'power2.out' }
+                  )
+                }
+              }
+            })
+          },
+        })
+      } else {
+        setShowList(false)
+        gsap.to(cardRef.current, {
+          width: 44,
+          duration: 0.25,
+          ease: 'power2.in',
+        })
       }
-    )
-  } else {
-    setShowList(false)
-    gsap.to(cardRef.current, {
-      width: 44,
-      duration: 0.25,
-      ease: 'power2.in',
-    })
-  }
-}, [open])
+    }
+  }, [open])
 
   useEffect(() => {
     if (showList && itemsRef.current.length > 0) {
@@ -68,39 +99,49 @@ export default function Navbar() {
     el?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  useEffect(() => {
+    const textEl = cardRef.current?.querySelector('span')
+    if (textEl) {
+      gsap.fromTo(textEl,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.3, delay: 0.2, ease: 'power2.out' }
+      )
+    }
+  }, [])
+
   return (
     <div className="fixed top-5 left-5 z-[1000] w-[160px]">
 
       {/* Card Paper toggle */}
-    <div
+      <div
         ref={cardRef}
         onClick={() => setOpen(!open)}
         className="relative cursor-pointer mb-3"
         style={{ height: '24px', width: '44px', overflow: 'hidden' }}
-        >
+      >
         {/* Kertas belakang 2 */}
         <div className="absolute inset-0 rounded-sm border border-[var(--border)]"
-            style={{ background: '#E0DAD2', transform: 'rotate(3deg)', zIndex: 1 }} />
+          style={{ background: '#E0DAD2', transform: 'rotate(3deg)', zIndex: 1 }} />
         {/* Kertas belakang 1 */}
         <div className="absolute inset-0 rounded-sm border border-[var(--border)]"
-            style={{ background: '#EAE5DE', transform: 'rotate(-2deg)', zIndex: 2 }} />
+          style={{ background: '#EAE5DE', transform: 'rotate(-2deg)', zIndex: 2 }} />
         {/* Kertas depan */}
         <div
-            className="absolute inset-0 rounded-sm border border-[var(--border)] flex items-center justify-center"
-            style={{ background: 'var(--bg)', zIndex: 3 }}
+          className="absolute inset-0 rounded-sm border border-[var(--border)] flex items-center justify-center"
+          style={{ background: 'var(--bg)', zIndex: 3 }}
         >
-            <span
-            className="text-[11px] font-medium tracking-widest uppercase whitespace-nowrap transition-opacity duration-150"
+          <span
+            className="text-[11px] font-medium tracking-widest uppercase whitespace-nowrap"
             style={{
-                color: 'var(--text-primary)',
-                opacity: open ? 0 : 1,
-                fontFamily: 'var(--font-sans)',
+              color: 'var(--text-primary)',
+              opacity: 0,
+              fontFamily: 'var(--font-sans)',
             }}
-            >
+          >
             Paper
-            </span>
+          </span>
         </div>
-    </div>
+      </div>
 
       {/* Nav list */}
       {showList && (

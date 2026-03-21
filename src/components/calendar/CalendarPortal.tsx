@@ -149,7 +149,7 @@ export default function CalendarPortal() {
             padding: '3px 10px',
             borderRadius: '3px',
             marginBottom: '24px',
-          }}>02</span>
+          }}>05</span>
 
           <h2 style={{
             fontFamily: 'var(--font-serif)',
@@ -204,7 +204,7 @@ export default function CalendarPortal() {
             padding: '3px 10px',
             borderRadius: '3px',
             marginBottom: '24px',
-          }}>03</span>
+          }}>07</span>
 
           <h2 style={{
             fontFamily: 'var(--font-serif)',
@@ -283,7 +283,7 @@ export default function CalendarPortal() {
             padding: '3px 10px',
             borderRadius: '3px',
             marginBottom: '24px',
-          }}>04</span>
+          }}>21</span>
 
           <h2 style={{
             fontFamily: 'var(--font-serif)',
@@ -308,7 +308,7 @@ export default function CalendarPortal() {
                 role: 'Juara 2',
                 period: '2024',
                 type: 'JUARA',
-                description: 'Meraih juara 2 dalam kompetisi web development di Universitas Komputer Indonesia.',
+                description: 'Meraih juara 2 dalam kompetisi web developmen di Universitas Komputer Indonesia.',
                 rotate: '0.5deg',
               },
               {
