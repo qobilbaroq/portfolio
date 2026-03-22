@@ -17,12 +17,11 @@ const SECTIONS = {
 export default function CalendarPortal() {
   const [activeSection, setActiveSection] = useState<number | null>(null)
   const sectionRefs = {
-    paper: useRef<HTMLDivElement>(null),
-    about: useRef<HTMLDivElement>(null),
-    now: useRef<HTMLDivElement>(null),
-    skills: useRef<HTMLDivElement>(null),
-    experience: useRef<HTMLDivElement>(null),
-    projects: useRef<HTMLDivElement>(null),
+    about: useRef<HTMLDivElement | null>(null),
+    now: useRef<HTMLDivElement | null>(null),
+    skills: useRef<HTMLDivElement | null>(null),
+    experience: useRef<HTMLDivElement | null>(null),
+    projects: useRef<HTMLDivElement | null>(null),
   }
 
   const handleDateClick = (date: number) => {

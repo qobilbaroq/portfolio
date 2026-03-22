@@ -5,7 +5,7 @@ import gsap from 'gsap'
 import Image from 'next/image'
 
 interface SkillsSectionProps {
-  sectionRef: React.RefObject<HTMLDivElement>
+  sectionRef: React.RefObject<HTMLDivElement | null>
 }
 
 const SKILLS = [
