@@ -2,7 +2,7 @@
 
 import { RefObject } from 'react'
 
-export default function NowSection({ sectionRef }: { sectionRef: RefObject<HTMLDivElement> }) {
+export default function NowSection({ sectionRef }: { sectionRef: RefObject<HTMLDivElement | null> }) {
   return (
     <section
       className="section-now"

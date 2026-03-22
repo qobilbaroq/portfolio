@@ -69,7 +69,7 @@ function ExperienceCard({
   )
 }
 
-export default function ExperienceSection({ sectionRef }: { sectionRef: RefObject<HTMLDivElement> }) {
+export default function ExperienceSection({ sectionRef }: { sectionRef: RefObject<HTMLDivElement | null> }) {
   return (
     <section
       className="section-experience"
