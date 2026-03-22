@@ -1,7 +1,7 @@
 import CalendarPortal from '@/components/calendar/CalendarPortal'
-import Footer from '@/components/sections/Footer'
-import ProjectsSection from '@/components/sections/ProjectsSection'
 import Navbar from '@/components/ui/Navbar'
+import ProjectsSection from '@/components/sections/ProjectsSection'
+import Footer from '@/components/sections/Footer'
 
 export default function HomePage() {
   return (
