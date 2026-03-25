@@ -109,7 +109,9 @@ export default function NowSection({ sectionRef }: NowSectionProps) {
     })
 
     return () => {
-      Draggable.get(memoRefs.current.filter(Boolean) as HTMLDivElement[])?.forEach?.((d: any) => d.kill())
+      memoRefs.current.forEach(el => {
+        if (el) Draggable.get(el)?.kill()
+      })
     }
   }, [])
 
