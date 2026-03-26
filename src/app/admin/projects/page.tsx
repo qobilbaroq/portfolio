@@ -21,7 +21,7 @@ const emptyProject = {
   title: '',
   slug: '',
   description: '',
-  tech_stack: [],
+  tech_stack: [] as string[],
   image_url: '',
   live_url: '',
   github_url: '',
