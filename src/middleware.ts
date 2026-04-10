@@ -25,23 +25,11 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
-
-  // Kalau akses /admin tapi belum login → redirect ke /admin/login
-  if (request.nextUrl.pathname.startsWith('/admin') &&
-      !request.nextUrl.pathname.startsWith('/admin/login') &&
-      !user) {
-    return NextResponse.redirect(new URL('/admin/login', request.url))
-  }
-
-  // Kalau sudah login tapi akses /admin/login → redirect ke /admin
-  if (request.nextUrl.pathname === '/admin/login' && user) {
-    return NextResponse.redirect(new URL('/admin', request.url))
-  }
+  await supabase.auth.getUser()
 
   return supabaseResponse
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: [],
 }

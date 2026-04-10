@@ -153,8 +153,8 @@ export default function CalendarGrid({ onDateClick }: CalendarGridProps) {
           color: isToday
             ? 'var(--bg)'
             : isSunday
-            ? 'var(--accent)'
-            : 'var(--text-muted)',
+              ? 'var(--accent)'
+              : 'var(--text-muted)',
           cursor: 'pointer',
           fontWeight: isToday ? '500' : '400',
           transition: 'all 0.15s ease',

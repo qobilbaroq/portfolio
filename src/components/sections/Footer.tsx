@@ -34,9 +34,58 @@ export default function Footer() {
         </h2>
 
         <div style={{ color: 'var(--text-muted)', fontSize: '13px', lineHeight: 2 }}>
-          <p><span style={{ color: 'var(--accent)' }}>Email ·</span> your@email.com</p>
-          <p><span style={{ color: 'var(--accent)' }}>GitHub ·</span> qobilbaroq</p>
-          <p><span style={{ color: 'var(--accent)' }}>LinkedIn ·</span> Moch Nabil Al Mubaroq</p>
+          <p>
+            <span style={{ color: 'var(--accent)' }}>Email ·</span>{' '}
+            <a
+              href="mailto:your@email.com"
+              style={{
+                color: 'inherit',
+                textDecoration: 'none',
+                cursor: 'pointer',
+                transition: 'color 0.3s ease'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'inherit'}
+            >
+              mochnabilalmubaroq@email.com
+            </a>
+          </p>
+          <p>
+            <span style={{ color: 'var(--accent)' }}>GitHub ·</span>{' '}
+            <a
+              href="https://github.com/qobilbaroq"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: 'inherit',
+                textDecoration: 'none',
+                cursor: 'pointer',
+                transition: 'color 0.3s ease'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'inherit'}
+            >
+              qobilbaroq
+            </a>
+          </p>
+          <p>
+            <span style={{ color: 'var(--accent)' }}>LinkedIn ·</span>{' '}
+            <a
+              href="https://linkedin.com/in/moch-nabil-al-mubaroq"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: 'inherit',
+                textDecoration: 'none',
+                cursor: 'pointer',
+                transition: 'color 0.3s ease'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'inherit'}
+            >
+              Moch Nabil Al Mubaroq
+            </a>
+          </p>
         </div>
 
         <div

@@ -86,53 +86,53 @@ export default function ProjectsSection() {
       <div>
 
         {/* List project */}
-          {PROJECTS.map((project, i) => (
-            <div
-              key={project.name}
-              onMouseEnter={() => setActiveProject(i)}
-              onMouseLeave={() => setActiveProject(null)}
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '20px 0',
-                borderBottom: '0.5px solid var(--border)',
-                cursor: 'pointer',
-                transition: 'opacity 0.2s ease',
-                opacity: activeProject !== null && activeProject !== i ? 0.4 : 1,
-              }}
-            >
-              <div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-                  <span
-                    className="proj-name"
-                    style={{
-                      fontFamily: 'var(--font-serif)',
-                      fontSize: 'clamp(22px, 4vw, 32px)',
-                      fontWeight: '400',
-                      color: activeProject === i ? 'var(--accent)' : 'var(--text-primary)',
-                      transition: 'color 0.2s ease',
-                      display: 'block',
-                    }}
-                  >{project.name}</span>
-                  <span style={{
-                    fontSize: '11px',
-                    color: 'var(--text-muted)',
-                    fontFamily: 'var(--font-sans)',
-                  }}>{project.year}</span>
-                </div>
-                <p style={{
-                  fontSize: '12px',
+        {PROJECTS.map((project, i) => (
+          <div
+            key={project.name}
+            onMouseEnter={() => setActiveProject(i)}
+            onMouseLeave={() => setActiveProject(null)}
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '20px 0',
+              borderBottom: '0.5px solid var(--border)',
+              cursor: 'pointer',
+              transition: 'opacity 0.2s ease',
+              opacity: activeProject !== null && activeProject !== i ? 0.4 : 1,
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
+                <span
+                  className="proj-name"
+                  style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontSize: 'clamp(22px, 4vw, 32px)',
+                    fontWeight: '400',
+                    color: activeProject === i ? 'var(--accent)' : 'var(--text-primary)',
+                    transition: 'color 0.2s ease',
+                    display: 'block',
+                  }}
+                >{project.name}</span>
+                <span style={{
+                  fontSize: '11px',
                   color: 'var(--text-muted)',
-                  marginTop: '2px',
-                }}>{project.tech}</p>
+                  fontFamily: 'var(--font-sans)',
+                }}>{project.year}</span>
               </div>
-              <span style={{
-                fontSize: '11px',
+              <p style={{
+                fontSize: '12px',
                 color: 'var(--text-muted)',
-              }}>({project.num})</span>
+                marginTop: '2px',
+              }}>{project.tech}</p>
             </div>
-          ))}
+            <span style={{
+              fontSize: '11px',
+              color: 'var(--text-muted)',
+            }}>({project.num})</span>
+          </div>
+        ))}
 
       </div>
 

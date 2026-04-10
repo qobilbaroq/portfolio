@@ -93,19 +93,19 @@ export default function Navbar() {
     }
   }, [showList])
 
- const handleClick = (section: string) => {
-  setOpen(false)
-  const el = document.querySelector(`.${section}`)
-  if (!el) return
+  const handleClick = (section: string) => {
+    setOpen(false)
+    const el = document.querySelector(`.${section}`)
+    if (!el) return
 
-  // Pakai Lenis kalau ada, fallback ke scrollIntoView
-  const lenis = (window as any).__lenis
-  if (lenis) {
-    lenis.scrollTo(el, { duration: 1.8, easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) })
-  } else {
-    el.scrollIntoView({ behavior: 'smooth' })
+    // Pakai Lenis kalau ada, fallback ke scrollIntoView
+    const lenis = (window as any).__lenis
+    if (lenis) {
+      lenis.scrollTo(el, { duration: 1.8, easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) })
+    } else {
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
   }
-}
 
   useEffect(() => {
     const textEl = cardRef.current?.querySelector('span')
