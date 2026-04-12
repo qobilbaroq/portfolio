@@ -88,7 +88,7 @@ export default function SkillsSection({ sectionRef }: SkillsSectionProps) {
           borderRadius: '3px',
           marginBottom: '24px',
           width: 'fit-content',
-        }}>03</span>
+        }}>07</span>
 
         <h2 style={{
           fontFamily: 'var(--font-serif)',

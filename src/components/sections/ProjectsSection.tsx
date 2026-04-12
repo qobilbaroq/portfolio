@@ -5,22 +5,30 @@ import gsap from 'gsap'
 
 const PROJECTS = [
   {
-    name: 'LogicPath',
+    name: 'Sibening',
     num: '01',
-    desc: 'JS Learning Platform',
-    tech: 'Next.js · JavaScript · Tailwind',
+    desc: "Sibening (Sistem Bimbingan Elektronik dan Konseling) was built as a full-featured web application tailored specifically for school BK departments. The system brings together four core modules — attendance management, late arrival tracking, problem student records, and real-time consultation chat — all under one roof.The real-time chat feature connects students directly with their BK teacher, enabling immediate counseling without scheduling constraints. Attendance data is visualized with status filters (Present, Sick, Excused, Absent), giving teachers instant visibility into class health at a glance. The result is a leaner, faster, and more humane counseling experience for both teachers and students.",
+    tech: 'Next.js · JavaScript · Tailwind · Real-time WebSocket',
     year: '2024',
     link: '#',
     color: '#E8E4DE',
+    images: [
+      '/projects/sibening1.png',
+      '/projects/sibening2.png',
+    ],
   },
   {
-    name: 'Youtone',
+    name: 'Elska',
     num: '02',
-    desc: 'Flutter Music App',
-    tech: 'Flutter · Dart · YouTube API',
+    desc: 'marketpace',
+    tech: 'vue · tailwind · laravel',
     year: '2024',
     link: '#',
     color: '#E4E8DE',
+    images: [
+      '/projects/elska1.png',
+      '/projects/elska2.png',
+    ],
   },
   {
     name: 'Tetris Mabar',
@@ -30,6 +38,9 @@ const PROJECTS = [
     year: '2024',
     link: '#',
     color: '#DDE4E8',
+    images: [
+      '/projects/tetris.png',
+    ],
   },
   {
     name: 'Portfolio',
@@ -39,13 +50,17 @@ const PROJECTS = [
     year: '2025',
     link: '#',
     color: '#E8DDE4',
+    images: [
+      '/projects/portfolio.png',
+    ],
   },
 ]
 
 export default function ProjectsSection() {
   const [activeProject, setActiveProject] = useState<number | null>(null)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const previewRef = useRef<HTMLDivElement>(null)
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -61,6 +76,25 @@ export default function ProjectsSection() {
     window.addEventListener('mousemove', handleMouseMove)
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
+
+  // Slideshow interval — reset tiap ganti project
+  useEffect(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current)
+
+    if (activeProject !== null) {
+      setCurrentImageIndex(0) // mulai dari foto pertama
+      const images = PROJECTS[activeProject].images
+      if (images.length > 1) {
+        intervalRef.current = setInterval(() => {
+          setCurrentImageIndex(prev => (prev + 1) % images.length)
+        }, 2500)
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+    }
+  }, [activeProject])
 
   return (
     <section
@@ -84,8 +118,6 @@ export default function ProjectsSection() {
       }}>Projects</h2>
 
       <div>
-
-        {/* List project */}
         {PROJECTS.map((project, i) => (
           <div
             key={project.name}
@@ -94,7 +126,7 @@ export default function ProjectsSection() {
             style={{
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center',
+              alignItems: 'flex-start',
               padding: '20px 0',
               borderBottom: '0.5px solid var(--border)',
               cursor: 'pointer',
@@ -121,10 +153,26 @@ export default function ProjectsSection() {
                   fontFamily: 'var(--font-sans)',
                 }}>{project.year}</span>
               </div>
+
+              {/* Deskripsi — muncul saat hover, animasi max-height */}
+              <div style={{
+                overflow: 'hidden',
+                maxHeight: activeProject === i ? '60px' : '0px',
+                opacity: activeProject === i ? 1 : 0,
+                transition: 'max-height 0.3s ease, opacity 0.3s ease',
+              }}>
+                <p style={{
+                  fontSize: '13px',
+                  color: 'var(--text-muted)',
+                  marginTop: '4px',
+                  fontFamily: 'var(--font-sans)',
+                }}>{project.desc}</p>
+              </div>
+
               <p style={{
                 fontSize: '12px',
                 color: 'var(--text-muted)',
-                marginTop: '2px',
+                marginTop: '4px',
               }}>{project.tech}</p>
             </div>
             <span style={{
@@ -133,69 +181,55 @@ export default function ProjectsSection() {
             }}>({project.num})</span>
           </div>
         ))}
-
       </div>
 
+      {/* Preview foto mengikuti mouse */}
       <div
         ref={previewRef}
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
-          width: '200px',
+          width: '350px',
           pointerEvents: 'none',
           zIndex: 100,
           opacity: activeProject !== null ? 1 : 0,
           transition: 'opacity 0.2s ease',
         }}
       >
-        {PROJECTS.map((project, i) => (
-          <div
-            key={project.name}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '200px',
-              opacity: activeProject === i ? 1 : 0,
-              transform: activeProject === i ? 'translateY(0) rotate(-1deg)' : 'translateY(8px) rotate(-1deg)',
-              transition: 'opacity 0.25s ease, transform 0.25s ease',
-            }}
-          >
+        {activeProject !== null && (
+          <div style={{
+            width: '350px',
+            transform: 'rotate(-1deg)',
+          }}>
             <div style={{
-              width: '200px',
-              height: '140px',
-              background: project.color,
+              width: '350px',
+              height: '250px',
               borderRadius: '6px',
               border: '0.5px solid var(--border)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'column',
-              gap: '8px',
+              overflow: 'hidden',
+              background: PROJECTS[activeProject].color,
+              position: 'relative',
             }}>
-              <p style={{
-                fontSize: '11px',
-                color: 'var(--text-muted)',
-                fontFamily: 'var(--font-sans)',
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-              }}>preview</p>
-              <p style={{
-                fontSize: '18px',
-                color: 'var(--text-primary)',
-                fontFamily: 'var(--font-serif)',
-                fontStyle: 'italic',
-              }}>{project.name}</p>
+              {PROJECTS[activeProject].images.map((src, imgIdx) => (
+                <img
+                  key={src}
+                  src={src}
+                  alt={PROJECTS[activeProject].name}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    opacity: currentImageIndex === imgIdx ? 1 : 0,
+                    transition: 'opacity 0.5s ease',
+                  }}
+                />
+              ))}
             </div>
-            <p style={{
-              fontSize: '11px',
-              color: 'var(--text-muted)',
-              marginTop: '8px',
-              textAlign: 'center',
-            }}>{project.desc}</p>
           </div>
-        ))}
+        )}
       </div>
     </section>
   )

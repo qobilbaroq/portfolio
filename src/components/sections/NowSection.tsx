@@ -138,7 +138,7 @@ export default function NowSection({ sectionRef }: NowSectionProps) {
         borderRadius: '3px',
         marginBottom: '24px',
         width: 'fit-content',
-      }}>02</span>
+      }}>05</span>
 
       <h2 style={{
         fontFamily: 'var(--font-serif)',
