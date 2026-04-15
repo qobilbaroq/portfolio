@@ -9,7 +9,7 @@ const PROJECTS = [
     num: '01',
     desc: "Sibening (Sistem Bimbingan Elektronik dan Konseling) was built as a full-featured web application tailored specifically for school BK departments. The system brings together four core modules — attendance management, late arrival tracking, problem student records, and real-time consultation chat — all under one roof.The real-time chat feature connects students directly with their BK teacher, enabling immediate counseling without scheduling constraints. Attendance data is visualized with status filters (Present, Sick, Excused, Absent), giving teachers instant visibility into class health at a glance. The result is a leaner, faster, and more humane counseling experience for both teachers and students.",
     tech: 'Next.js · JavaScript · Tailwind · Real-time WebSocket',
-    year: '2024',
+    year: '2025',
     link: '#',
     color: '#E8E4DE',
     images: [
@@ -22,7 +22,7 @@ const PROJECTS = [
     num: '02',
     desc: 'marketpace',
     tech: 'vue · tailwind · laravel',
-    year: '2024',
+    year: '2025',
     link: '#',
     color: '#E4E8DE',
     images: [
@@ -35,7 +35,7 @@ const PROJECTS = [
     num: '03',
     desc: 'Multiplayer Flutter Game',
     tech: 'Flutter · WebSocket · Node.js',
-    year: '2024',
+    year: '2025',
     link: '#',
     color: '#DDE4E8',
     images: [
@@ -47,7 +47,7 @@ const PROJECTS = [
     num: '04',
     desc: 'This Website',
     tech: 'Next.js · GSAP · Supabase',
-    year: '2025',
+    year: '2026',
     link: '#',
     color: '#E8DDE4',
     images: [
